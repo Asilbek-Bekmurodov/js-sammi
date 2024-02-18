@@ -27,3 +27,21 @@ btns[0].addEventListener("click", () => {
 
   btns[1].classList.toggle("red");
 });
+
+wrapper.addEventListener("click", (event) => {
+  if (event.target && event.target.matches("button.red")) {
+    console.log("btn bosildi");
+  }
+});
+// agar biz ota element orqali bolalariga tasir o'tkazsak bu narsa delegatsiya deb ataladi
+
+btns.forEach((btn) => {
+  btn.addEventListener("click", () => {
+    console.log("bosildi");
+  });
+});
+
+const btn = document.createElement("button");
+btn.classList.add("blue");
+
+wrapper.append(btn);
