@@ -29,7 +29,7 @@ btns[0].addEventListener("click", () => {
 });
 
 wrapper.addEventListener("click", (event) => {
-  if (event.target && event.target.matches("button.red")) {
+  if (event.target && event.target.matches("button.blue")) {
     console.log("btn bosildi");
   }
 });
