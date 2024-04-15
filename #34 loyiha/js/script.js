@@ -53,11 +53,10 @@ window.addEventListener("DOMContentLoaded", () => {
     }
     hideTabContent();
     showTabContent(num);
-    console.log(num);
   }, 3000);
 
   // Timer
-  const deadline = "2023-05-20";
+  const deadline = "2024-05-20";
   function getTimeRemaining(endtime) {
     let days, hours, minutes, seconds;
     const timer = Date.parse(endtime) - Date.parse(new Date());
@@ -105,6 +104,40 @@ window.addEventListener("DOMContentLoaded", () => {
       }
     }
   }
-  
   setClock(".timer", deadline);
+
+  const modalTrigger = document.querySelector("[data-modal]"),
+    modal = document.querySelector(".modal"),
+    modalClose = document.querySelector("[data-close]");
+
+  function closeModal() {
+    modal.classList.add("hide");
+    modal.classList.remove("show");
+    document.body.style.overflow = "";
+  }
+
+  function openModal() {
+    modal.classList.add("show");
+    modal.classList.remove("hide");
+    document.body.style.overflow = "hidden";
+    clearInterval(timerId);
+  }
+
+  modalTrigger.addEventListener("click", openModal);
+
+  modalClose.addEventListener("click", closeModal);
+
+  modal.addEventListener("click", (e) => {
+    if (e.target == modal) {
+      closeModal();
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.code == "Escape" && modal.classList.contains("show")) {
+      closeModal();
+    }
+  });
+
+  const timerId = setTimeout(openModal, 5000);
 });
