@@ -153,4 +153,63 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
   window.addEventListener("scroll", showModalScroll);
+
+  class MenuCard {
+    constructor(src, alt, desc, price, parentEl) {
+      this.src = src;
+      this.alt = alt;
+      this.desc = desc;
+      this.price = price;
+      this.parent = document.querySelector(parentEl);
+      this.usz = 12000;
+    }
+
+    valutaChanger() {
+      return this.price * this.usz;
+    }
+
+    render() {
+      const element = document.createElement("div");
+      element.innerHTML = `
+        <div class="menu__item">
+          <img src="${this.src}" alt="${this.alt}" />
+          <h3 class="menu__item-subtitle">Plan "Usual"</h3>
+          <div class="menu__item-descr">
+            ${this.desc}
+          </div>
+          <div class="menu__item-divider"></div>
+          <div class="menu__item-price">
+            <div class="menu__item-cost">Price:</div>
+            <div class="menu__item-total"><span>${this.valutaChanger()} uzs</span> month</div>
+          </div>
+        </div>
+      `;
+
+      this.parent.append(element);
+    }
+  }
+
+  new MenuCard(
+    "img/tabs/1.png",
+    "vegy",
+    "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugitnesciunt facere, sequi exercitationem praesentium ab cupiditate beatae debitis perspiciatis itaque quaerat id modi corporis delectus ratione nobis harum voluptatum in.",
+    10,
+    ".menu .container"
+  ).render();
+
+  new MenuCard(
+    "img/tabs/1.png",
+    "vegy",
+    "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugitnesciunt facere, sequi exercitationem praesentium ab cupiditate beatae debitis perspiciatis itaque quaerat id modi corporis delectus ratione nobis harum voluptatum in.",
+    10,
+    ".menu .container"
+  ).render();
+
+  new MenuCard(
+    "img/tabs/1.png",
+    "vegy",
+    "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugitnesciunt facere, sequi exercitationem praesentium ab cupiditate beatae debitis perspiciatis itaque quaerat id modi corporis delectus ratione nobis harum voluptatum in.",
+    10,
+    ".menu .container"
+  ).render();
 });
