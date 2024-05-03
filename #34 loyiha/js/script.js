@@ -107,8 +107,7 @@ window.addEventListener("DOMContentLoaded", () => {
   setClock(".timer", deadline);
 
   const modalTrigger = document.querySelectorAll("[data-modal]"),
-    modal = document.querySelector(".modal"),
-    modalClose = document.querySelector("[data-close]");
+    modal = document.querySelector(".modal");
 
   function closeModal() {
     modal.classList.add("hide");
@@ -127,10 +126,8 @@ window.addEventListener("DOMContentLoaded", () => {
     item.addEventListener("click", openModal);
   });
 
-  modalClose.addEventListener("click", closeModal);
-
   modal.addEventListener("click", (e) => {
-    if (e.target == modal) {
+    if (e.target == modal || e.target.getAttribute("data-close") == "") {
       closeModal();
     }
   });
@@ -196,46 +193,94 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  new MenuCard(
-    "img/tabs/1.png",
-    "vegy",
-    "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugitnesciunt facere, sequi exercitationem praesentium ab cupiditate beatae debitis perspiciatis itaque quaerat id modi corporis delectus ratione nobis harum voluptatum in.",
-    10,
-    ".menu .container"
-  ).render();
+  async function getRecourse(url) {
+    const res = await fetch(url);
+    return await res.json();
+  }
 
-  new MenuCard(
-    "img/tabs/1.png",
-    "vegy",
-    "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugitnesciunt facere, sequi exercitationem praesentium ab cupiditate beatae debitis perspiciatis itaque quaerat id modi corporis delectus ratione nobis harum voluptatum in.",
-    10,
-    ".menu .container",
-    "menu__item"
-  ).render();
-
-  new MenuCard(
-    "img/tabs/1.png",
-    "vegy",
-    "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugitnesciunt facere, sequi exercitationem praesentium ab cupiditate beatae debitis perspiciatis itaque quaerat id modi corporis delectus ratione nobis harum voluptatum in.",
-    10,
-    ".menu .container",
-    "menu__item"
-  ).render();
-
-  const forms = document.querySelectorAll(".order__form");
-
-  forms.forEach((item) => {
-    postData(item);
+  getRecourse("http://localhost:3000/menu").then((data) => {
+    data.forEach(({ src, alt, desk, price, id }) => {
+      new MenuCard(src, alt, desk, price, ".menu .container").render();
+    });
   });
 
-  function postData(form) {
+  const msg = {
+    loading: "../img/Bean Eater@1x-0.3s-200px-200px.svg",
+    success: "Thank's for submitting our form",
+    failure: "Something went wrong",
+  };
+
+  const forms = document.querySelectorAll("form");
+
+  forms.forEach((item) => {
+    bindPostData(item);
+  });
+
+  async function postData(url, data) {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: data,
+    });
+    return await res;
+  }
+
+  function bindPostData(form) {
     form?.addEventListener("submit", (e) => {
       e.preventDefault();
+
+      const statusMessage = document.createElement("img");
+      statusMessage.src = msg.loading;
+      statusMessage.style.cssText = `
+      display: block;
+      margin: 0 auto;
+      `;
+
+      form.insertAdjacentElement("afterend", statusMessage);
+      const formData = new FormData(form);
+      const json = JSON.stringify(Object.fromEntries(formData.entries()));
+      // formData.forEach((val, key) => {
+      //   obj[key] = val;
+      // });
+
+      postData("http://localhost:3000/requests", json)
+        .then((data) => data.text())
+        .then((data) => {
+          console.log(data);
+          showThanksModal(msg.success);
+          statusMessage.remove();
+        })
+        .catch(() => {
+          showThanksModal(msg.failure);
+          statusMessage.remove();
+        })
+        .finally(() => {
+          form.reset();
+        });
     });
   }
-});
 
-fetch("http://localhost:3000/menu")
-  .then((data) => data.json())
-  .then((data) => console.log(data))
-  .catch((err) => console.log(err));
+  function showThanksModal(message) {
+    const prevModalDialog = document.querySelector(".modal__dialog");
+    prevModalDialog.classList.add("hide");
+    openModal();
+
+    const thanksModal = document.createElement("div");
+    thanksModal.classList.add("modal__dialog");
+    thanksModal.innerHTML = `
+    <div class="modal__content">
+      <div data-close class="modal__close">&times;</div>
+      <div class="modal__title">${message}</div>
+    </div>
+    `;
+
+    document.querySelector(".modal").append(thanksModal);
+    setTimeout(() => {
+      thanksModal.remove();
+      prevModalDialog.classList.add("show");
+      prevModalDialog.classList.remove("hide");
+    }, 4000);
+  }
+});
