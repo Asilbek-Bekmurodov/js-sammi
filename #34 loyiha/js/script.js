@@ -193,16 +193,27 @@ window.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  async function getRecourse(url) {
-    const res = await fetch(url);
-    return await res.json();
-  }
+  // async function getRecourse(url) {
+  //   const res = await fetch(url);
+  //   return await res.json();
+  // }
 
-  getRecourse("http://localhost:3000/menu").then((data) => {
-    data.forEach(({ src, alt, desk, price, id }) => {
+  // getRecourse("http://localhost:3000/menu").then((data) => {
+  //   data.forEach(({ src, alt, desk, price, id }) => {
+  //     new MenuCard(src, alt, desk, price, ".menu .container").render();
+  //   });
+  // });
+  axios.get("http://localhost:3000/menu").then((data) => {
+    data.data.forEach(({ src, alt, desk, price, id }) => {
       new MenuCard(src, alt, desk, price, ".menu .container").render();
     });
   });
+
+  // axios.get("http://localhost:3000/menu").then((data) => {
+  //   data.forEach(({ src, alt, desk, price, id }) => {
+  //     new MenuCard(src, alt, desk, price, ".menu .container").render();
+  //   });
+  // });
 
   const msg = {
     loading: "../img/Bean Eater@1x-0.3s-200px-200px.svg",
@@ -224,6 +235,9 @@ window.addEventListener("DOMContentLoaded", () => {
       },
       body: data,
     });
+    if (!res.ok) {
+      throw new Error(`something went wrong ${res.status}`);
+    }
     return await res;
   }
 
@@ -252,8 +266,9 @@ window.addEventListener("DOMContentLoaded", () => {
           showThanksModal(msg.success);
           statusMessage.remove();
         })
-        .catch(() => {
+        .catch((err) => {
           showThanksModal(msg.failure);
+          console.log(err);
           statusMessage.remove();
         })
         .finally(() => {
@@ -267,6 +282,7 @@ window.addEventListener("DOMContentLoaded", () => {
     prevModalDialog.classList.add("hide");
     openModal();
 
+    console.log(message);
     const thanksModal = document.createElement("div");
     thanksModal.classList.add("modal__dialog");
     thanksModal.innerHTML = `
