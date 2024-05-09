@@ -155,13 +155,14 @@ window.addEventListener("DOMContentLoaded", () => {
   window.addEventListener("scroll", showModalScroll);
 
   class MenuCard {
-    constructor(src, alt, desc, price, parentEl) {
+    constructor(src, alt, desc, price, parentEl, ...classes) {
       this.src = src;
       this.alt = alt;
       this.desc = desc;
       this.price = price;
       this.parent = document.querySelector(parentEl);
       this.usz = 12000;
+      this.classes = classes;
     }
 
     valutaChanger() {
@@ -170,8 +171,15 @@ window.addEventListener("DOMContentLoaded", () => {
 
     render() {
       const element = document.createElement("div");
+
+      if (this.classes.length === 0) {
+        this.element = "menu__item";
+        element.classList.add(this.element);
+      } else {
+        this.classes.forEach((className) => element.classList.add(className));
+      }
+
       element.innerHTML = `
-        <div class="menu__item">
           <img src="${this.src}" alt="${this.alt}" />
           <h3 class="menu__item-subtitle">Plan "Usual"</h3>
           <div class="menu__item-descr">
@@ -182,7 +190,6 @@ window.addEventListener("DOMContentLoaded", () => {
             <div class="menu__item-cost">Price:</div>
             <div class="menu__item-total"><span>${this.valutaChanger()} uzs</span> month</div>
           </div>
-        </div>
       `;
 
       this.parent.append(element);
@@ -202,7 +209,8 @@ window.addEventListener("DOMContentLoaded", () => {
     "vegy",
     "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugitnesciunt facere, sequi exercitationem praesentium ab cupiditate beatae debitis perspiciatis itaque quaerat id modi corporis delectus ratione nobis harum voluptatum in.",
     10,
-    ".menu .container"
+    ".menu .container",
+    "menu__item"
   ).render();
 
   new MenuCard(
@@ -210,6 +218,7 @@ window.addEventListener("DOMContentLoaded", () => {
     "vegy",
     "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugitnesciunt facere, sequi exercitationem praesentium ab cupiditate beatae debitis perspiciatis itaque quaerat id modi corporis delectus ratione nobis harum voluptatum in.",
     10,
-    ".menu .container"
+    ".menu .container",
+    "menu__item"
   ).render();
 });
