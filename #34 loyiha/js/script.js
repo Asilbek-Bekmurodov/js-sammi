@@ -231,7 +231,11 @@ window.addEventListener("DOMContentLoaded", () => {
   function postData(form) {
     form?.addEventListener("submit", (e) => {
       e.preventDefault();
-      
     });
   }
 });
+
+fetch("http://localhost:3000/menu")
+  .then((data) => data.json())
+  .then((data) => console.log(data))
+  .catch((err) => console.log(err));

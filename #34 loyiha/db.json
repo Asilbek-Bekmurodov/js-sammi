@@ -1,0 +1,22 @@
+{
+  "menu": [
+    {
+      "src": "img/tabs/1.png",
+      "alt": "vegy",
+      "desk": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugitnesciunt facere, sequi exercitationem praesentium ab cupiditate beatae debitis perspiciatis itaque quaerat id modi corporis delectus ratione nobis harum voluptatum in.",
+      "price": "10"
+    },
+    {
+      "src": "img/tabs/2.png",
+      "alt": "vegy",
+      "desk": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugitnesciunt facere, sequi exercitationem praesentium ab cupiditate beatae debitis perspiciatis itaque quaerat id modi corporis delectus ratione nobis harum voluptatum in.",
+      "price": "20"
+    },
+    {
+      "src": "img/tabs/3.png",
+      "alt": "vegy",
+      "desk": "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugitnesciunt facere, sequi exercitationem praesentium ab cupiditate beatae debitis perspiciatis itaque quaerat id modi corporis delectus ratione nobis harum voluptatum in.",
+      "price": "30"
+    }
+  ]
+}
