@@ -1,30 +1,18 @@
-function form() {
+import { openModal, closeModal } from "./modal";
+import { postData } from "../server/server";
+
+function form(timerId, formSelector) {
+  const forms = document.querySelectorAll(formSelector);
+
   const msg = {
     loading: "../img/Bean Eater@1x-0.3s-200px-200px.svg",
     success: "Thank's for submitting our form",
     failure: "Something went wrong",
   };
 
-  const forms = document.querySelectorAll("form");
-
   forms.forEach((item) => {
     bindPostData(item);
   });
-
-  async function postData(url, data) {
-    const res = await fetch(url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: data,
-    });
-    if (!res.ok) {
-      throw new Error(`something went wrong ${res.status}`);
-    }
-
-    return await res;
-  }
 
   function bindPostData(form) {
     form?.addEventListener("submit", (e) => {
@@ -65,7 +53,7 @@ function form() {
   function showThanksModal(message) {
     const prevModalDialog = document.querySelector(".modal__dialog");
     prevModalDialog.classList.add("hide");
-    openModal();
+    openModal(".modal", timerId);
 
     console.log(message);
     const thanksModal = document.createElement("div");

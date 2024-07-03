@@ -5,12 +5,15 @@ import modal from "../modules/modal";
 import slider from "../modules/slider";
 import tabs from "../modules/tabs";
 import timer from "../modules/timer";
+import { openModal } from "../modules/modal";
 
 window.addEventListener("DOMContentLoaded", () => {
+  const timerId = setTimeout(() => openModal(".modal", timerId), 5000);
+
   clas();
-  form();
+  form(timerId, "form");
   loader();
-  modal();
+  modal("[data-modal]", ".modal", timerId);
   slider();
   tabs();
   timer();
